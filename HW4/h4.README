@@ -1,0 +1,106 @@
+# 牛頓迭代法求平方根 (Newton's Method for Square Root)
+
+本專案展示如何透過**牛頓迭代法（Newton-Raphson Method）**，在不使用程式語言內建平方根函式（如 Python 的 `math.sqrt`）的情況下，以數值分析的方式快速逼近並計算任意非負實數的平方根。
+
+## 特色 (Features)
+
+* **高效收斂**：利用牛頓法的二次收斂性（Quadratic Convergence），通常只需 4～6 次迭代即可達極高精度。
+* **純 Python 實作**：無需額外安裝第三方函式庫。
+* **可自訂參數**：支援自訂容許誤差（Tolerance）與最大迭代次數（Max Iterations）。
+* **完整過程追蹤**：提供每次迭代過程的數值與誤差變化輸出，方便教學與調試。
+
+## 數學原理 (Mathematical Principle)
+
+求解 $\sqrt{S}$ 等同於尋找方程式 $f(x) = 0$ 的根，其中：
+
+$$f(x) = x^2 - S$$
+
+根據牛頓迭代公式：
+
+$$x_{n+1} = x_n - \frac{f(x_n)}{f'(x_n)}$$
+
+對於 $f(x) = x^2 - S$，其一階導數為 $f'(x) = 2x$。代入公式後簡化可得巴比倫法（Babylonian Method）遞迴式：
+
+$$x_{n+1} = \frac{1}{2} \left( x_n + \frac{S}{x_n} \right)$$
+
+只要給定適當的初始猜測值 $x_0 > 0$，重複計算直到前後兩次迭代結果的差值 $|x_{n+1} - x_n| < \text{tol}$ 即可停止。
+
+## 檔案結構 (Project Structure)
+
+```
+.
+├── newton_sqrt.py    # 主程式，包含牛頓迭代法實作與測試範例
+└── README.md         # 專案說明文件
+```
+
+## 快速開始 (Quick Start)
+
+### 1. 環境需求
+
+* Python 3.6 以上版本
+
+### 2. 執行程式
+
+複製專案後直接執行 Python 檔：
+
+```bash
+python newton_sqrt.py
+```
+
+## 程式碼說明 (Usage Example)
+
+`newton_sqrt.py` 核心邏輯如下：
+
+```python
+def sqrt_newton(S: float, tol: float = 1e-7, max_iter: int = 100) -> float:
+    """
+    使用牛頓迭代法計算 S 的平方根
+    
+    :param S: 欲求平方根的目標數值 (S >= 0)
+    :param tol: 容許誤差 (Tolerance)
+    :param max_iter: 最大允許迭代次數
+    :return: 計算出的平方根數值
+    """
+    if S < 0:
+        raise ValueError("負數沒有實數平方根")
+    if S == 0:
+        return 0.0
+
+    # 選擇合理的初始猜測值
+    x = S / 2.0 if S >= 1.0 else 1.0
+
+    for i in range(1, max_iter + 1):
+        x_next = 0.5 * (x + S / x)
+        diff = abs(x_next - x)
+        
+        print(f"Iteration {i}: x = {x_next:.10f}, diff = {diff:.2e}")
+
+        if diff < tol:
+            print(f"於第 {i} 次迭代成功收斂！")
+            return x_next
+
+        x = x_next
+
+    return x
+
+if __name__ == "__main__":
+    target = 2.0
+    result = sqrt_newton(target)
+    print(f"\nsqrt({target}) 的計算結果: {result:.10f}")
+```
+
+## 執行輸出範例 (Sample Output)
+
+以計算 $\sqrt{2}$ 為例：
+
+```text
+尋求 sqrt(2.0) 的迭代過程：
+Iteration 1: x = 1.5000000000, diff = 5.00e-01
+Iteration 2: x = 1.4166666667, diff = 8.33e-02
+Iteration 3: x = 1.4142156863, diff = 2.45e-03
+Iteration 4: x = 1.4142135624, diff = 2.12e-06
+Iteration 5: x = 1.4142135624, diff = 1.59e-12
+於第 5 次迭代成功收斂！
+
+sqrt(2.0) 的計算結果: 1.4142135624
+```
