@@ -29,7 +29,3 @@ $$\int_{[0,1]^n} \sum_{i=1}^n x_i^2\,dx = \frac{n}{3}$$
 ### 為什麼高維度（如 100 維）不能直接用固定細網格做黎曼積分？
 若每個維度切 $k$ 格，$n$ 維網格點總數為 $k^n$。當 $n=100, k=20$ 時，網格點數為 $20^{100}$，遠超記憶體與運算能力（即**維度災難 / Curse of Dimensionality**）。程式中的 `integral()` 設有 `max_total_points` 上限保護，並在輸出中展示此現象；而**蒙地卡羅積分**的統計誤差收斂速度為 $O(1/\sqrt{N})$，在 $n=100$ 時仍能穩定且快速地給出近似解。
 
-
-```bash
-pip install numpy
-python numerical_mc_calculus.py
