@@ -1,7 +1,3 @@
-"""
-數值微積分與蒙地卡羅積分實作（支援 1 維與 n 維）
-AI 使用聲明：本程式由 AI 輔助撰寫與測試，建議執行前先人工檢視數值精度與維度限制。
-"""
 
 from __future__ import annotations
 
@@ -11,7 +7,6 @@ from typing import Callable, Iterable, Sequence
 
 import numpy as np
 
-AI_USAGE_NOTICE = "本程式由 AI 輔助生成（含演算法實作、測試範例與說明文件）。"
 
 
 # =====================================================================
